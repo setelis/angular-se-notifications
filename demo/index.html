@@ -1,0 +1,35 @@
+<html data-ng-app="seNotificationsDemoApp" data-ng-controller="DemoCtrl as demoCtrl">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>seNotificationsDemoApp</title>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" />
+		<link rel="stylesheet" href="../css/seNotifications.css" />
+	</head>
+	<body>
+
+		<div class="notifications se-animation-showhide" data-se-notifications data-se-notifications-position="BAR"></div>
+
+		<button type="button" data-ng-click="demoCtrl.throwError()">throw</button>
+		<button type="button" data-ng-click="demoCtrl.showInfo()">show info</button>
+
+		<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.1/restangular.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.8.1/angular-translate.js"></script>
+
+		<script src="scripts/demoCtrl.js"></script>
+
+
+		<script src="../src/seNotificationsModule.js"></script>
+		<script src="../src/seNotificationsService.js"></script>
+		<script src="../src/seNotificationsDirective.js"></script>
+		<script src="../src/seLoggerService.js"></script>
+		<script src="../src/seNotificationsTranslations.js"></script>
+		<script src="../src/seNotificationsTranslations.bg.js"></script>
+		<script src="../src/seNotificationsTranslations.en.js"></script>
+		<script src="../src/seNotificationsVersion.js"></script>
+		<script src="../gen/seNotificationsHtml.js"></script>
+	</body>
+</html>

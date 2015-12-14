@@ -1,0 +1,50 @@
+{
+  "name": "angular-se-notifications",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "~1.4.3",
+    "angular-translate": "~2.7.2",
+    "restangular": "~1.5.1",
+    "lodash": "~3.10.1",
+    "angular-se-event-helper-service": "~0.0.1"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.3",
+    "angular-scenario": "~1.4.3"
+  },
+  "homepage": "https://github.com/setelis/angular-se-notifications",
+  "authors": [
+    "Plamen Tanov <ptanov@setelis.com>"
+  ],
+  "description": "Notifications helps in displaying info and error messages to the users.",
+  "main": [
+     "src/seNotificationsModule.js",
+     "src/seNotificationsService.js",
+     "src/seNotificationsDirective.js",
+     "src/seLoggerService.js",
+     "src/seNotificationsTranslations.bg.js",
+     "src/seNotificationsTranslations.en.js",
+     "src/seNotificationsTranslations.js",
+     "src/seNotificationsVersion.js",
+     "gen/seNotificationsHtml.js",
+     "css/seNotifications.css"
+  ],
+
+  "keywords": [
+    "angular",
+    "notifications",
+    "helper",
+    "error",
+    "info"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo",
+    "flow"
+  ]
+}
