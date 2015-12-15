@@ -1,6 +1,6 @@
 (function () {
 	"use strict";
-	angular.module("seNotifications.logger", ["seEventHelperService"]).service("SeLoggerService", ["$injector", "$rootScope", function($injector, $rootScope) {
+	angular.module("seNotifications.logger", ["seEventHelperService"]).service("SeNotificationsLoggerService", ["$injector", "$rootScope", function($injector, $rootScope) {
 		var service = this;
 		service.$$init = function() {};
 		var oldWindowOnError = window.onerror;
@@ -151,7 +151,7 @@
 			return $delegate;
 		}]);
 
-	}]).run(function(SeLoggerService) {
-		SeLoggerService.$$init();
+	}]).run(function(SeNotificationsLoggerService) {
+		SeNotificationsLoggerService.$$init();
 	});
 })();
