@@ -1,5 +1,5 @@
 angular.module("seNotifications.directive", ["seNotifications.service", "pascalprecht.translate",
-	"seNotifications.translations.bg", "seNotifications.html"]).
+	"seNotifications.translations", "seNotifications.html"]).
 directive("seNotifications", function (SeNotificationsService) {
 	"use strict";
 

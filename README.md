@@ -1,12 +1,86 @@
 # What is this
 
 Notifications helps in displaying info and error messages to the users.
-* TODO - more info *
+Automatically logs errors and send them to server. It logs user interaction before error happends - see http://docs.senotifications.apiary.io/:
+```json
+{
+   "message":{
+		"template":"seNotifications.internalError.onerror",
+	   "parameters":null,
+	   "debugInfo": {
+				LOCALURL: URL.../angular-se-notifications/demo/index.html,
+				TYPE: seNotifications.internalError.onerror,
+				PARAMETERS: {
+					"type": "seNotifications.internalError.onerror",
+					"errorMsg": "Uncaught TypeError: window.unknownFunction is not a function",
+					"url": "URL.../angular-se-notifications/demo/index.html",
+					"lineNumber": 97
+				},
+				DATE: Tue Dec 15 2015 11:03:53 GMT+0200 (EET),
+				TIME: 1450170233305,
+				USERAGENT: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36,
+		},
+	   "version":{
+	      "version":"_VERSION_",
+	      "buildDate":"_BUILD_DATE_",
+	      "buildDateAsString":"_BUILD_DATE_AS_STRING_",
+	      "commit":"_COMMIT_"
+	   },
+	   "type":"TEXT",
+	   "severity":"ERROR",
+	   "position":"BAR",
+	   "timeToShow":5000,
+	   "tag":"seNotifications.internalError.onerror"
+	},
+	LASTSTATES:[
+	   {
+	      "eventPrevented":false,
+	      "toState":"<unknown>",
+	      "fromState":"<unknown>",
+	      "now":"2015-12-15T09:03:49.310Z",
+	      "actions":[
+	         {
+	            "now":"2015-12-15T09:03:51.342Z",
+	            "message":{
+	               "name":"clickEvent",
+	               "click":"BUTTON[4]|data-ng-click=demoCtrl.showInfo() < body"
+	            }
+	         },
+	         {
+	            "now":"2015-12-15T09:03:49.310Z",
+	            "message		":{
+	               "name":"clickEvent",
+	               "click":"BUTTON[4]|data-ng-click=demoCtrl.showInfo() < body"
+	            }
+	         }
+	      ]
+	   }
+	]
+}
+```
+
+
+- Demo: http://setelis.github.io/angular-se-notifications/demo
+* **TODO - more info**
 
 # Install:
 
  - Add library to your project: ```bower install angular-se-notifications --save```
  - Add module to your project: ```angular.module("DemoApp", ["seNotifications"])...```
+ - Set ```Restangular``` base url:
+```js
+ }).config(function(RestangularProvider) {
+ 	"use strict";
+ 	// Set default server URL for 'logs/' endpoint
+ 	RestangularProvider.setBaseUrl("http://private-5150df-senotifications.apiary-mock.com");
+ });
+ ```
+ - Add placeholder where notifications should be displayed:
+ ```<div class="notifications se-animation-showhide" data-se-notifications data-se-notifications-position="BAR"></div>```
+ - Show info (```showNotificationError()``` - for error) message (second argument is passed to ```angular-translate``` when translating - the context):
+ ```SeNotificationsService.showNotificationInfo("hello", null);```
+
+
  - TODO
 
 # Dependencies:
@@ -15,6 +89,7 @@ Notifications helps in displaying info and error messages to the users.
  - SeEventHelperService - helper
  - Lodash
  - bootstrap, optional
+ - angular-animate, optional - see the demo http://setelis.github.io/angular-se-notifications/demo
 
 # For developers:
 # Setup

@@ -28,8 +28,8 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 		LONG: 20000
 	};
 	// change to false in production
-	service.DEBUG_ENABLED = true; // REPLACE_DEVELOPMENT
-	// service.DEBUG_ENABLED = false; // REPLACE_STAGE
+	// service.DEBUG_ENABLED = true; // REPLACE_DEVELOPMENT
+	service.DEBUG_ENABLED = false; // REPLACE_STAGE
 	// service.DEBUG_ENABLED = false; // REPLACE_PRODUCTION
 
 	function pushState(fromState, toState, eventPrevented) {
@@ -195,8 +195,8 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 							return false;
 						}
 						function skipSend(debugInfo) {
-							if ((notification.template === "internalError.onerror" ||
-								notification.template === "internalError.exceptionHandler" || notification.template === "internalError.log.error") &&
+							if ((notification.template === "seNotifications.internalError.onerror" ||
+								notification.template === "seNotifications.internalError.exceptionHandler" || notification.template === "seNotifications.internalError.log.error") &&
 								oldBrowser(debugInfo)) {
 								return true;
 							}
@@ -218,7 +218,7 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 						}
 						var debugInfo = "'" + notification.debugInfo.replace(/[."'\\\s]/g, "'") + "'";
 
-						if (notification.template === "internalError.onerror" &&
+						if (notification.template === "seNotifications.internalError.onerror" &&
 							(eventsError(debugInfo))) {
 							result.skipShow = true;
 							result.skipSend = true;
@@ -409,7 +409,7 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 
 		service.showNotificationInfo = function(msgKey, parameters, tag) {
 			tag = tag || msgKey;
-			service.notificationBuilder(msgKey).type(service.TYPE.TEXT)
+			service.notificationBuilder(msgKey, parameters).type(service.TYPE.TEXT)
 				.severity(service.SEVERITY.INFO).position(service.POSITION.BAR)
 					.timeToShow(service.TIME_TO_SHOW.MEDIUM).tag(tag, true).post();
 		};

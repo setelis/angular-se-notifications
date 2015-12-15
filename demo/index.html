@@ -5,12 +5,99 @@
 
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" />
 		<link rel="stylesheet" href="../css/seNotifications.css" />
+
+		<style>
+
+			/* show hide */
+
+			/* from http://www.ng-newsletter.com/advent2013/#!/day/11
+			* ngRepeat triggers three animation events: enter, leave and move.
+			*/
+
+			.se-animation-showhide.ng-enter,
+			.se-animation-showhide.ng-leave,
+			.se-animation-showhide.ng-hide-add,
+			.se-animation-showhide.ng-hide-remove,
+			.se-animation-showhide.ng-move {
+			-webkit-transition:0.5s linear all;
+			transition:0.5s linear all;
+			}
+
+			.se-animation-showhide.ng-enter-stagger,
+			.se-animation-showhide.ng-leave-stagger,
+			.se-animation-showhide.ng-hide-add-stagger,
+			.se-animation-showhide.ng-hide-remove-stagger,
+			.se-animation-showhide.ng-move-stagger {
+			/* 50ms between each item being animated after the other */
+			-webkit-transition-delay:50ms;
+			transition-delay:50ms;
+
+			/* this is required here to prevent any CSS inheritance issues */
+			-webkit-transition-duration:0;
+			transition-duration:0;
+			}
+
+			/* ending enter and move styling
+			(this is what the element will animate from */
+			.se-animation-showhide.ng-enter,
+			.se-animation-showhide.ng-hide-add,
+			.se-animation-showhide.ng-hide-remove,
+			.se-animation-showhide.ng-move { opacity:0; }
+
+			/* ending enter and move styling
+			(this is what the element will animate towards */
+			.se-animation-showhide.ng-enter.ng-enter-active,
+			.se-animation-showhide.ng-hide-add-active,
+			.se-animation-showhide.ng-hide-remove-active,
+			.se-animation-showhide.ng-move.ng-move-active { opacity:1; }
+
+			/* starting leave animation */
+			.se-animation-showhide.ng-leave { opacity:1; }
+
+			/* ending leave animation */
+			.se-animation-showhide.ng-leave.ng-leave-active { opacity:0; }
+
+
+			/* right to left */
+
+			.se-animation-right-to-left.ng-enter,
+			.se-animation-right-to-left.ng-leave
+			{
+			    -webkit-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+			    -moz-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+			    -ms-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+			    -o-transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+			    transition: 500ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+			    position: relative;
+			    display: block;
+			}
+
+			.se-animation-right-to-left.ng-enter.ng-enter-active,
+			.se-animation-right-to-left.ng-leave {
+			    opacity: 1;
+			    left: 0px;
+			    height: 30px;
+			}
+
+			.se-animation-right-to-left.ng-leave.ng-leave-active,
+			.se-animation-right-to-left.ng-enter {
+			    opacity: 0;
+			    left: 50px;
+			    height: 0px;
+			}
+
+
+		</style>
 	</head>
 	<body>
 
 		<div class="notifications se-animation-showhide" data-se-notifications data-se-notifications-position="BAR"></div>
-
-		<button type="button" data-ng-click="demoCtrl.throwError()">throw</button>
+		<script type="text/javascript">
+			window.erroneousFunction = function() {
+				window.unknownFunction();
+			}
+		</script>
+		<button type="button" onclick="erroneousFunction()">throw</button>
 		<button type="button" data-ng-click="demoCtrl.showInfo()">show info</button>
 
 		<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
@@ -18,9 +105,10 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.1/restangular.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.8.1/angular-translate.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-animate.js"></script>
+		<script src="libs/seEventHelperService.js"></script>
 
 		<script src="scripts/demoCtrl.js"></script>
-
 
 		<script src="../src/seNotificationsModule.js"></script>
 		<script src="../src/seNotificationsService.js"></script>

@@ -1,6 +1,6 @@
 (function () {
 	"use strict";
-	angular.module("seNotifications.logger", []).service("SeLoggerService", ["$injector", "$rootScope", function($injector, $rootScope) {
+	angular.module("seNotifications.logger", ["seEventHelperService"]).service("SeLoggerService", ["$injector", "$rootScope", function($injector, $rootScope) {
 		var service = this;
 		service.$$init = function() {};
 		var oldWindowOnError = window.onerror;
@@ -15,14 +15,14 @@
 			SeEventHelperService.safeApply($rootScope, function() {
 				var SeNotificationsService = $injector.get("SeNotificationsService");
 				var debugInfo = SeNotificationsService.parametersToDebugInfo({
-					type: "internalError.onerror",
+					type: "seNotifications.internalError.onerror",
 					errorMsg: errorMsg,
 					url: url,
 					lineNumber: lineNumber
 				});
-				SeNotificationsService.notificationBuilder("internalError.onerror", null, debugInfo).type(SeNotificationsService.TYPE.TEXT)
+				SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null, debugInfo).type(SeNotificationsService.TYPE.TEXT)
 					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-					.timeToShow(SeNotificationsService.TIME_TO_SHOW.SHORT).tag("internalError.onerror", false).post();
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.SHORT).tag("seNotifications.internalError.onerror", false).post();
 			});
 
 			return result;
@@ -63,14 +63,14 @@
 				}
 
 				var debugInfo = SeNotificationsService.parametersToDebugInfo({
-					type: "internalError.exceptionHandler",
+					type: "seNotifications.internalError.exceptionHandler",
 					exception: exception,
 					cause: cause,
 					stack: stack
 				});
-				SeNotificationsService.notificationBuilder("internalError.exceptionHandler", null, debugInfo).type(SeNotificationsService.TYPE.TEXT)
+				SeNotificationsService.notificationBuilder("seNotifications.internalError.exceptionHandler", null, debugInfo).type(SeNotificationsService.TYPE.TEXT)
 					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-					.timeToShow(SeNotificationsService.TIME_TO_SHOW.SHORT).tag("internalError.exceptionHandler", false).post();
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.SHORT).tag("seNotifications.internalError.exceptionHandler", false).post();
 
 				return $delegate;
 			};
@@ -118,13 +118,13 @@
 					stack = arguments[0].stack;
 				}
 				var debugInfo = SeNotificationsService.parametersToDebugInfo({
-					type: "internalError.log.error",
+					type: "seNotifications.internalError.log.error",
 					args: removeElements(arguments),
 					stack: stack
 				});
-				SeNotificationsService.notificationBuilder("internalError.log.error", null, debugInfo).type(SeNotificationsService.TYPE.TEXT)
+				SeNotificationsService.notificationBuilder("seNotifications.internalError.log.error", null, debugInfo).type(SeNotificationsService.TYPE.TEXT)
 					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-					.timeToShow(SeNotificationsService.TIME_TO_SHOW.SHORT).tag("internalError.log.error", false).post();
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.SHORT).tag("seNotifications.internalError.log.error", false).post();
 
 			};
 			$delegate.error.logs = error.logs;
@@ -138,13 +138,13 @@
 					stack = arguments[0].stack;
 				}
 				var debugInfo = SeNotificationsService.parametersToDebugInfo({
-					type: "internalError.log.warn",
+					type: "seNotifications.internalError.log.warn",
 					args: removeElements(arguments),
 					stack: stack
 				});
-				SeNotificationsService.notificationBuilder("internalError.log.warn", null, debugInfo).type(SeNotificationsService.TYPE.TEXT)
+				SeNotificationsService.notificationBuilder("seNotifications.internalError.log.warn", null, debugInfo).type(SeNotificationsService.TYPE.TEXT)
 					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-					.timeToShow(SeNotificationsService.TIME_TO_SHOW.SHORT).tag("internalError.log.warn", false).post();
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.SHORT).tag("seNotifications.internalError.log.warn", false).post();
 			};
 			$delegate.warn.logs = warn.logs;
 
