@@ -20,7 +20,7 @@ module.exports = function(config) {
          "src/seNotificationsModule.js",
          "src/seNotificationsService.js",
          "src/seNotificationsDirective.js",
-         "src/seLoggerService.js",
+         "src/seNotificationsLoggerService.js",
          "src/seNotificationsHtml.js",
          "src/seNotificationsTranslations.js",
          "src/seNotificationsTranslations.bg.js",

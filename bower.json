@@ -1,6 +1,6 @@
 {
   "name": "angular-se-notifications",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "angular": "~1.4.3",
     "angular-translate": "~2.7.2",
@@ -21,7 +21,7 @@
      "src/seNotificationsModule.js",
      "src/seNotificationsService.js",
      "src/seNotificationsDirective.js",
-     "src/seLoggerService.js",
+     "src/seNotificationsLoggerService.js",
      "src/seNotificationsTranslations.bg.js",
      "src/seNotificationsTranslations.en.js",
      "src/seNotificationsTranslations.js",
