@@ -37,7 +37,7 @@ module.exports = function (grunt) {
 					"jshint",
 					"karma:unit",
 					// "htmlangular:index",
-					// "htmlangular:continuous",
+					"htmlangular:continuous",
 					"flow:app"
 				];
 			} else {
@@ -354,7 +354,7 @@ module.exports = function (grunt) {
 		//update buildnotminified as described in comment
 		grunt.registerTask("build", [
 			// "prepare",
-			// "test",
+			"test",
 			// "concurrent:dist",
 			"copy:src",
 			"copy:css",
