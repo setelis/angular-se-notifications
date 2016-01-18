@@ -90,6 +90,7 @@ Automatically logs errors and send them to server. It logs user interaction befo
  - Lodash
  - bootstrap, optional
  - angular-animate, optional - see the demo http://setelis.github.io/angular-se-notifications/demo
+ - jquery - listen for clicks and send them to the server on error
 
 # For developers:
 # Setup
