@@ -1,6 +1,6 @@
 {
   "name": "angular-se-notifications",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "dependencies": {
     "jquery": "~2.1.4",
     "angular": "~1.4.3",

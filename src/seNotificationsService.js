@@ -407,16 +407,16 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 		};
 
 
-		service.showNotificationInfo = function(msgKey, parameters, tag) {
+		service.showNotificationInfo = function(msgKey, parameters, tag, debugInfo) {
 			tag = tag || msgKey;
-			service.notificationBuilder(msgKey, parameters).type(service.TYPE.TEXT)
+			service.notificationBuilder(msgKey, parameters, debugInfo).type(service.TYPE.TEXT)
 				.severity(service.SEVERITY.INFO).position(service.POSITION.BAR)
 					.timeToShow(service.TIME_TO_SHOW.MEDIUM).tag(tag, true).post();
 		};
 
-		service.showNotificationError = function(msgKey, parameters, tag) {
+		service.showNotificationError = function(msgKey, parameters, tag, debugInfo) {
 			tag = tag || msgKey;
-			service.notificationBuilder(msgKey, parameters).type(service.TYPE.TEXT)
+			service.notificationBuilder(msgKey, parameters, debugInfo).type(service.TYPE.TEXT)
 			.severity(service.SEVERITY.ERROR).position(service.POSITION.BAR)
 				.timeToShow(service.TIME_TO_SHOW.LONG).tag(tag, true).post();
 		};
