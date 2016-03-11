@@ -6,7 +6,6 @@ describe("SeNotificationsService", function() {
 		$httpBackend.when("POST", "/logs").respond(400, "error");
 		$httpBackend.flush();
 	}
-
 	beforeEach(module("seNotifications.service", function($provide) {
 		$provide.value("VersionsService", {
 			getVersionInfo: function() {
@@ -14,19 +13,57 @@ describe("SeNotificationsService", function() {
 			}
 		});
 	}));
-	beforeEach(inject(function(_SeNotificationsService_, _$timeout_) {
-		SeNotificationsService = _SeNotificationsService_;
-		$timeout = _$timeout_;
-	}));
 
-	beforeEach(inject(function(_$httpBackend_) {
-		$httpBackend = _$httpBackend_;
-	}));
-	afterEach(function() {
-		$httpBackend.verifyNoOutstandingExpectation();
-		$httpBackend.verifyNoOutstandingRequest();
+	function initVariables() {
+		beforeEach(inject(function(_SeNotificationsService_, _$timeout_) {
+			SeNotificationsService = _SeNotificationsService_;
+			$timeout = _$timeout_;
+		}));
+
+		beforeEach(inject(function(_$httpBackend_) {
+			$httpBackend = _$httpBackend_;
+		}));
+		afterEach(function() {
+			$httpBackend.verifyNoOutstandingExpectation();
+			$httpBackend.verifyNoOutstandingRequest();
+		});
+	}
+
+	describe("Change configuration", function() {
+		beforeEach(function() {
+			module(function(SeNotificationsServiceProvider) {
+				SeNotificationsServiceProvider.setCustomizedOptions({logsEndpoint: "logs/webapp"});
+			});
+		});
+		initVariables();
+		it("should add notification - change url", inject(function() {
+			expect(SeNotificationsService.notifications.length).toBe(0);
+
+			SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
+				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
+				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", true).post();
+			$httpBackend.when("POST", "/logs/webapp").respond(400, "error");
+			$httpBackend.flush();
+
+			expect(SeNotificationsService.notifications.length).toBe(1);
+
+			expect(SeNotificationsService.notifications[0]).toEqual({
+				template: "errors.stateNotFound",
+				parameters: undefined,
+				type: "TEXT",
+				position: "BAR",
+				severity: "ERROR",
+				timeToShow: 20000,
+				debugInfo: undefined,
+				tag: "some",
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
+			});
+
+		}));
+
 	});
 	describe("SeNotificationsService", function() {
+		initVariables();
 		it("should init notifications", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 		}));
@@ -84,61 +121,63 @@ describe("SeNotificationsService", function() {
 			});
 
 		}));
-		it("should exclude toFixed notification", inject(function() {
-			expect(SeNotificationsService.notifications.length).toBe(0);
+		describe("exclusions", function() {
+			it("should exclude toFixed notification", inject(function() {
+				expect(SeNotificationsService.notifications.length).toBe(0);
 
-			SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null,
-				"''errorMsg'  :   Unable to get property 'toFixed' of undefined or null reference").type(SeNotificationsService.TYPE.TEXT)
-				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", true).post();
-			// expectLog();
+				SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null,
+					"''errorMsg'  :   Unable to get property 'toFixed' of undefined or null reference").type(SeNotificationsService.TYPE.TEXT)
+					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", true).post();
+				// expectLog();
 
-			expect(SeNotificationsService.notifications.length).toBe(0);
-		}));
-		it("should exclude toFixed notification - german", inject(function() {
-			expect(SeNotificationsService.notifications.length).toBe(0);
+				expect(SeNotificationsService.notifications.length).toBe(0);
+			}));
+			it("should exclude toFixed notification - german", inject(function() {
+				expect(SeNotificationsService.notifications.length).toBe(0);
 
-			SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null,
-				"\n  \"errorMsg\": \"Die Eigenschaft \\\"toFixed\\\" eines undefinierten oder Nullverweises kann nicht abgerufen werden.\",\n  \"url\":").type(SeNotificationsService.TYPE.TEXT)
-				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", true).post();
-			// expectLog();
+				SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null,
+					"\n  \"errorMsg\": \"Die Eigenschaft \\\"toFixed\\\" eines undefinierten oder Nullverweises kann nicht abgerufen werden.\",\n  \"url\":").type(SeNotificationsService.TYPE.TEXT)
+					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", true).post();
+				// expectLog();
 
-			expect(SeNotificationsService.notifications.length).toBe(0);
-		}));
+				expect(SeNotificationsService.notifications.length).toBe(0);
+			}));
 
-		it("should not send IE 8", inject(function() {
-			expect(SeNotificationsService.notifications.length).toBe(0);
-			SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null,
-				"(compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SL").type(SeNotificationsService.TYPE.TEXT)
-				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
+			it("should not send IE 8", inject(function() {
+				expect(SeNotificationsService.notifications.length).toBe(0);
+				SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null,
+					"(compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SL").type(SeNotificationsService.TYPE.TEXT)
+					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
 
-			SeNotificationsService.notificationBuilder("seNotifications.internalError.exceptionHandler", null,
-				"(compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SL").type(SeNotificationsService.TYPE.TEXT)
-				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
+				SeNotificationsService.notificationBuilder("seNotifications.internalError.exceptionHandler", null,
+					"(compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SL").type(SeNotificationsService.TYPE.TEXT)
+					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
 
-			SeNotificationsService.notificationBuilder("seNotifications.internalError.log.error", null,
-				"(compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SL").type(SeNotificationsService.TYPE.TEXT)
-				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
-			// expectLog();
+				SeNotificationsService.notificationBuilder("seNotifications.internalError.log.error", null,
+					"(compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SL").type(SeNotificationsService.TYPE.TEXT)
+					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
+				// expectLog();
 
-			expect(SeNotificationsService.notifications.length).toBe(3);
-		}));
+				expect(SeNotificationsService.notifications.length).toBe(3);
+			}));
 
-		it("should not send response:0", inject(function() {
-			expect(SeNotificationsService.notifications.length).toBe(0);
+			it("should not send response:0", inject(function() {
+				expect(SeNotificationsService.notifications.length).toBe(0);
 
-			SeNotificationsService.notificationBuilder("httperrors.0", null,
-				"\nRESPONSESTATUSCODE: 0, \nRESPONSESTATUSTEXT").type(SeNotificationsService.TYPE.TEXT)
-				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", true).post();
-			// expectLog();
+				SeNotificationsService.notificationBuilder("httperrors.0", null,
+					"\nRESPONSESTATUSCODE: 0, \nRESPONSESTATUSTEXT").type(SeNotificationsService.TYPE.TEXT)
+					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
+					.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", true).post();
+				// expectLog();
 
-			expect(SeNotificationsService.notifications.length).toBe(1);
-		}));
+				expect(SeNotificationsService.notifications.length).toBe(1);
+			}));
+		});
 
 		it("should auto remove notification after given time", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
