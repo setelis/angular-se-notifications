@@ -1,4 +1,4 @@
-(function () {
+(function() {
 	"use strict";
 	angular.module("seNotifications.logger", ["seEvents.seEventHelperService"]).service("SeNotifiactionsLoggerService", ["$injector", "$rootScope", function($injector, $rootScope) {
 		var service = this;
@@ -77,14 +77,14 @@
 		}]);
 
 		// based on http://solutionoptimist.com/2013/10/07/enhance-angularjs-logging-using-decorators/
-		$provide.decorator( "$log", [ "$delegate", "$injector", function($delegate, $injector) {
+		$provide.decorator("$log", ["$delegate", "$injector", function($delegate, $injector) {
 			function removeElements(array) {
 				var result = [];
 				$.each(array, function() {
 					var next = this;
 					if (next instanceof jQuery) {
 						result.push(removeElements(next));
-					} else if (angular.isElement(next)){
+					} else if (angular.isElement(next)) {
 						var attributes = {};
 						$.each(next.attributes, function() {
 							if (!angular.isUndefined(this.value || this.nodeValue)) {
@@ -111,7 +111,6 @@
 					return;
 				}
 				error.apply(null, arguments);
-
 
 				var stack = "";
 				if (arguments.length > 0 && arguments[0] && arguments[0].stack) {

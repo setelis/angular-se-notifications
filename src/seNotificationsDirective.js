@@ -1,6 +1,6 @@
 angular.module("seNotifications.directive", ["seNotifications.service", "pascalprecht.translate",
 	"seNotifications.translations", "seNotifications.html"]).
-directive("seNotifications", function (SeNotificationsService) {
+directive("seNotifications", function(SeNotificationsService) {
 	"use strict";
 
 	return {

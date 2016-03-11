@@ -1,4 +1,4 @@
-describe("SeNotificationsService", function () {
+describe("SeNotificationsService", function() {
 	"use strict";
 
 	var SeNotificationsService, $timeout, $httpBackend;
@@ -14,23 +14,23 @@ describe("SeNotificationsService", function () {
 			}
 		});
 	}));
-	beforeEach(inject(function (_SeNotificationsService_, _$timeout_) {
+	beforeEach(inject(function(_SeNotificationsService_, _$timeout_) {
 		SeNotificationsService = _SeNotificationsService_;
 		$timeout = _$timeout_;
 	}));
 
-	beforeEach(inject(function (_$httpBackend_) {
+	beforeEach(inject(function(_$httpBackend_) {
 		$httpBackend = _$httpBackend_;
 	}));
 	afterEach(function() {
 		$httpBackend.verifyNoOutstandingExpectation();
 		$httpBackend.verifyNoOutstandingRequest();
 	});
-	describe("SeNotificationsService", function () {
-		it("should init notifications", inject(function () {
+	describe("SeNotificationsService", function() {
+		it("should init notifications", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 		}));
-		it("should not allow empty notification", inject(function () {
+		it("should not allow empty notification", inject(function() {
 			expect(SeNotificationsService.notificationBuilder("errors.stateNotFound").post)
 				.toThrow("SeNotificationsService: no info for type in errors.stateNotFound");
 
@@ -61,7 +61,7 @@ describe("SeNotificationsService", function () {
 				.toThrow("SeNotificationsService: no info for tag in errors.stateNotFound");
 		}));
 
-		it("should add notification", inject(function () {
+		it("should add notification", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
@@ -80,22 +80,22 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 
 		}));
-		it("should exclude toFixed notification", inject(function () {
+		it("should exclude toFixed notification", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
 			SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null,
-				"''errorMsg'   :   Unable to get property 'toFixed' of undefined or null reference").type(SeNotificationsService.TYPE.TEXT)
+				"''errorMsg'  :   Unable to get property 'toFixed' of undefined or null reference").type(SeNotificationsService.TYPE.TEXT)
 				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
 				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", true).post();
 			// expectLog();
 
 			expect(SeNotificationsService.notifications.length).toBe(0);
 		}));
-		it("should exclude toFixed notification - german", inject(function () {
+		it("should exclude toFixed notification - german", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
 			SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null,
@@ -107,8 +107,7 @@ describe("SeNotificationsService", function () {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 		}));
 
-
-		it("should not send IE 8", inject(function () {
+		it("should not send IE 8", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 			SeNotificationsService.notificationBuilder("seNotifications.internalError.onerror", null,
 				"(compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SL").type(SeNotificationsService.TYPE.TEXT)
@@ -129,7 +128,7 @@ describe("SeNotificationsService", function () {
 			expect(SeNotificationsService.notifications.length).toBe(3);
 		}));
 
-		it("should not send response:0", inject(function () {
+		it("should not send response:0", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
 			SeNotificationsService.notificationBuilder("httperrors.0", null,
@@ -141,7 +140,7 @@ describe("SeNotificationsService", function () {
 			expect(SeNotificationsService.notifications.length).toBe(1);
 		}));
 
-		it("should auto remove notification after given time", inject(function () {
+		it("should auto remove notification after given time", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
@@ -159,7 +158,7 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 			expectLog();
 
@@ -176,14 +175,14 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 
 			$timeout.flush(200);
 
 			expect(SeNotificationsService.notifications.length).toBe(0);
 		}));
-		it("should auto remove notification with same tag", inject(function () {
+		it("should auto remove notification with same tag", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
@@ -202,14 +201,13 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound1").type(SeNotificationsService.TYPE.TEXT)
 				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
 				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
 			expectLog();
-
 
 			expect(SeNotificationsService.notifications.length).toBe(2);
 
@@ -222,7 +220,7 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 			expect(SeNotificationsService.notifications[1]).toEqual({
 				template: "errors.stateNotFound1",
@@ -233,14 +231,13 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound2").type(SeNotificationsService.TYPE.TEXT)
 				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
 				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", true).post();
 			expectLog();
-
 
 			expect(SeNotificationsService.notifications.length).toBe(1);
 
@@ -253,10 +250,10 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 		}));
-		it("should remove notification by tag", inject(function () {
+		it("should remove notification by tag", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
@@ -275,7 +272,7 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound1").type(SeNotificationsService.TYPE.TEXT)
@@ -294,7 +291,7 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 			expect(SeNotificationsService.notifications[1]).toEqual({
 				template: "errors.stateNotFound1",
@@ -305,14 +302,14 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 
 			SeNotificationsService.removeTag("some");
 
 			expect(SeNotificationsService.notifications.length).toBe(0);
 		}));
-		it("should not add notification if debug is not enabled and notification is debuggable", inject(function () {
+		it("should not add notification if debug is not enabled and notification is debuggable", inject(function() {
 			var oldValue = SeNotificationsService.DEBUG_ENABLED;
 			SeNotificationsService.DEBUG_ENABLED = false;
 			expect(SeNotificationsService.notifications.length).toBe(0);
@@ -325,7 +322,7 @@ describe("SeNotificationsService", function () {
 
 			SeNotificationsService.DEBUG_ENABLED = oldValue;
 		}));
-		it("should add notification if debug is not enabled and notification is not debuggable", inject(function () {
+		it("should add notification if debug is not enabled and notification is not debuggable", inject(function() {
 			var oldValue = SeNotificationsService.DEBUG_ENABLED;
 			SeNotificationsService.DEBUG_ENABLED = true;
 			expect(SeNotificationsService.notifications.length).toBe(0);
@@ -346,12 +343,12 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: undefined,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 
 			SeNotificationsService.DEBUG_ENABLED = oldValue;
 		}));
-		it("should add notification if debug is enabled and notification is debuggable", inject(function () {
+		it("should add notification if debug is enabled and notification is debuggable", inject(function() {
 			var oldValue = SeNotificationsService.DEBUG_ENABLED;
 			SeNotificationsService.DEBUG_ENABLED = true;
 			expect(SeNotificationsService.notifications.length).toBe(0);
@@ -372,20 +369,20 @@ describe("SeNotificationsService", function () {
 				timeToShow: 20000,
 				debugInfo: null,
 				tag: "some",
-				version: { version : "_VERSION_", buildDate : "_BUILD_DATE_", buildDateAsString : "_BUILD_DATE_AS_STRING_", commit : "_COMMIT_" }
+				version: {version: "_VERSION_", buildDate: "_BUILD_DATE_", buildDateAsString: "_BUILD_DATE_AS_STRING_", commit: "_COMMIT_"}
 			});
 
 			SeNotificationsService.DEBUG_ENABLED = oldValue;
 		}));
-		it("should not add more than 10 notifications", inject(function () {
+		it("should not add more than 10 notifications", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
-			for(var i = 0; i<20; i++) {
+			for (var i = 0; i < 20; i++) {
 				SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
 					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
 					.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
 
-				if (i<10) {
+				if (i < 10) {
 					expectLog();
 				}
 			}
@@ -395,7 +392,7 @@ describe("SeNotificationsService", function () {
 
 			var now = new Date().getTime();
 			var oldTime = window.Date.prototype.getTime;
-			window.Date.prototype.getTime = function() {return now+3000;};
+			window.Date.prototype.getTime = function() {return now + 3000;};
 			expect(SeNotificationsService.notifications.length).toBe(10);
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
@@ -406,7 +403,7 @@ describe("SeNotificationsService", function () {
 
 			window.Date.prototype.getTime = oldTime;
 		}));
-		it("should handle type 'SERVER'", inject(function () {
+		it("should handle type 'SERVER'", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
@@ -418,7 +415,7 @@ describe("SeNotificationsService", function () {
 			$httpBackend.verifyNoOutstandingRequest();
 			expect(SeNotificationsService.notifications.length).toBe(0);
 		}));
-		it("should handle doNotNotifyServer", inject(function () {
+		it("should handle doNotNotifyServer", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
 			SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
@@ -429,20 +426,20 @@ describe("SeNotificationsService", function () {
 			$httpBackend.verifyNoOutstandingRequest();
 			expect(SeNotificationsService.notifications.length).toBe(1);
 		}));
-		it("should set httpErrorHideConfiguration", inject(function () {
+		it("should set httpErrorHideConfiguration", inject(function() {
 			expect(SeNotificationsService.getAndClearHttpErrorHideFlag()).toBe(false);
 			SeNotificationsService.handleHttpError([]);
 			expect(SeNotificationsService.getAndClearHttpErrorHideFlag()).toBe(true);
 		}));
 
-		it("should reset httpErrorHideConfiguration", inject(function () {
+		it("should reset httpErrorHideConfiguration", inject(function() {
 			expect(SeNotificationsService.getAndClearHttpErrorHideFlag()).toBe(false);
 			SeNotificationsService.handleHttpError([]);
 			expect(SeNotificationsService.getAndClearHttpErrorHideFlag()).toBe(true);
 			expect(SeNotificationsService.getAndClearHttpErrorHideFlag()).toBe(false);
 		}));
 
-		it("should warn if httpErrorHideConfiguration is set twice", inject(function ($log) {
+		it("should warn if httpErrorHideConfiguration is set twice", inject(function($log) {
 			expect(SeNotificationsService.getAndClearHttpErrorHideFlag()).toBe(false);
 			SeNotificationsService.handleHttpError([1]);
 			expect($log.error.logs.length).toBe(0);
@@ -453,9 +450,9 @@ describe("SeNotificationsService", function () {
 			expect(SeNotificationsService.getAndClearHttpErrorHideFlag()).toBe(false);
 		}));
 
-		it("should throw if configuration is empty", inject(function () {
+		it("should throw if configuration is empty", inject(function() {
 			expect(SeNotificationsService.handleHttpError).toThrow("SeNotificationsService: handlersConfiguration must be array: " + undefined);
-			expect(function() {SeNotificationsService.handleHttpError({a:1});}).toThrow("SeNotificationsService: handlersConfiguration must be array: "+{a:1});
+			expect(function() {SeNotificationsService.handleHttpError({a: 1});}).toThrow("SeNotificationsService: handlersConfiguration must be array: " + {a: 1});
 		}));
 
 	});
