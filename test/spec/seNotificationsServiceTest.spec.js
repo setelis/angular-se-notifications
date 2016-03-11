@@ -79,6 +79,8 @@ describe("SeNotificationsService", function() {
 				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
 				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some.info").post)
 				.toThrow("SeNotificationsService: no info for type in errors.stateNotFound");
+
+			$timeout.flush(501);
 			expect(SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
 				.position(SeNotificationsService.POSITION.BAR)
 				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some.info").post)
@@ -91,6 +93,7 @@ describe("SeNotificationsService", function() {
 				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR).tag("some.info")
 				.post)
 				.toThrow("SeNotificationsService: no info for timeToShow in errors.stateNotFound");
+			$timeout.flush(501);
 			expect(SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
 				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
 				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG)
@@ -413,35 +416,6 @@ describe("SeNotificationsService", function() {
 
 			SeNotificationsService.DEBUG_ENABLED = oldValue;
 		}));
-		it("should not add more than 10 notifications", inject(function() {
-			expect(SeNotificationsService.notifications.length).toBe(0);
-
-			for (var i = 0; i < 20; i++) {
-				SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
-					.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-					.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
-
-				if (i < 10) {
-					expectLog();
-				}
-			}
-			$httpBackend.verifyNoOutstandingExpectation();
-			$httpBackend.verifyNoOutstandingRequest();
-			expect(SeNotificationsService.notifications.length).toBe(10);
-
-			var now = new Date().getTime();
-			var oldTime = window.Date.prototype.getTime;
-			window.Date.prototype.getTime = function() {return now + 3000;};
-			expect(SeNotificationsService.notifications.length).toBe(10);
-
-			SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
-				.severity(SeNotificationsService.SEVERITY.ERROR).position(SeNotificationsService.POSITION.BAR)
-				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some", false).post();
-			expectLog();
-			expect(SeNotificationsService.notifications.length).toBe(11);
-
-			window.Date.prototype.getTime = oldTime;
-		}));
 		it("should handle type 'SERVER'", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
 
@@ -492,6 +466,31 @@ describe("SeNotificationsService", function() {
 		it("should throw if configuration is empty", inject(function() {
 			expect(SeNotificationsService.handleHttpError).toThrow("SeNotificationsService: handlersConfiguration must be array: " + undefined);
 			expect(function() {SeNotificationsService.handleHttpError({a: 1});}).toThrow("SeNotificationsService: handlersConfiguration must be array: " + {a: 1});
+		}));
+
+		it("should not display more than 3 messages", inject(function() {
+			expect(SeNotificationsService.notifications.length).toBe(0);
+			SeNotificationsService.showNotificationError("first");
+			expectLog();
+			expect(SeNotificationsService.notifications.length).toBe(1);
+
+			SeNotificationsService.showNotificationError("second");
+			expectLog();
+			expect(SeNotificationsService.notifications.length).toBe(2);
+
+			SeNotificationsService.showNotificationError("third");
+			expectLog();
+			expect(SeNotificationsService.notifications.length).toBe(3);
+
+			// no more logs
+			SeNotificationsService.showNotificationError("fourth");
+			expect(SeNotificationsService.notifications.length).toBe(3);
+
+			$timeout.flush(501);
+
+			SeNotificationsService.showNotificationError("fifth");
+			expectLog();
+			expect(SeNotificationsService.notifications.length).toBe(4);
 		}));
 
 	});

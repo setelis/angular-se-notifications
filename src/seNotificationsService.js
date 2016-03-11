@@ -9,6 +9,11 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 		var service = this;
 		var lastStates = [];
 		var httpErrorHideConfiguration = false;
+		var notificationsCountSettings = {
+			lastSecondNotificationsCount: 0,
+			MAX_NOTIFICATIONS_PER_TIME: 3,
+			MAX_NOTIFICATIONS_TIME: 500
+		};
 
 		service.TYPE = {
 			TEXT: "TEXT",
@@ -128,21 +133,17 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 			logStates();
 		}
 		function attachMethods() {
-			var continousPostsCount = 0;
-			var lastTimePosted = 0;
-			var MAX_CONTINOUS_POSTS_COUNT = 10;
-			var CONTINOUS_WAIT_TIME = 2000;
 			function checkContinous() {
-				var now = new Date().getTime();
-				if ((now - lastTimePosted) < CONTINOUS_WAIT_TIME) {
-					continousPostsCount++;
-				} else {
-					continousPostsCount = 1;
-				}
-				lastTimePosted = now;
+				notificationsCountSettings.lastSecondNotificationsCount++;
 
-				if (continousPostsCount > MAX_CONTINOUS_POSTS_COUNT) {
-					return false;
+				if (notificationsCountSettings.lastSecondNotificationsCount === 1) {
+					$timeout(function() {
+						notificationsCountSettings.lastSecondNotificationsCount = 0;
+					}, notificationsCountSettings.MAX_NOTIFICATIONS_TIME);
+				} else {
+					if (notificationsCountSettings.lastSecondNotificationsCount > notificationsCountSettings.MAX_NOTIFICATIONS_PER_TIME) {
+						return false;
+					}
 				}
 				return true;
 			}
