@@ -238,7 +238,7 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 							}
 							var logsRest = $injector.get("Restangular").all(options.logsEndpoint);
 
-							logsRest.post({message: angular.toJson(notification) + ";LASTSTATES: " + angular.toJson(lastStates)}, {}, {ceServerValidate: true});
+							logsRest.post({message: angular.toJson(notification) + ";LASTSTATES: " + angular.toJson(lastStates)});
 						}
 
 						var shouldSkip = shouldSkipThisNotification(notification);
