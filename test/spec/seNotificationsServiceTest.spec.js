@@ -80,11 +80,11 @@ describe("SeNotificationsService", function() {
 				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some.info").post)
 				.toThrow("SeNotificationsService: no info for type in errors.stateNotFound");
 
-			$timeout.flush(501);
 			expect(SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
 				.position(SeNotificationsService.POSITION.BAR)
 				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some.info").post)
 				.toThrow("SeNotificationsService: no info for severity in errors.stateNotFound");
+			$timeout.flush(1201);
 			expect(SeNotificationsService.notificationBuilder("errors.stateNotFound").type(SeNotificationsService.TYPE.TEXT)
 				.severity(SeNotificationsService.SEVERITY.ERROR)
 				.timeToShow(SeNotificationsService.TIME_TO_SHOW.LONG).tag("some.info").post)
@@ -470,27 +470,31 @@ describe("SeNotificationsService", function() {
 
 		it("should not display more than 3 messages", inject(function() {
 			expect(SeNotificationsService.notifications.length).toBe(0);
-			SeNotificationsService.showNotificationError("first");
+			SeNotificationsService.showNotificationError("1");
 			expectLog();
 			expect(SeNotificationsService.notifications.length).toBe(1);
 
-			SeNotificationsService.showNotificationError("second");
+			SeNotificationsService.showNotificationError("2");
 			expectLog();
 			expect(SeNotificationsService.notifications.length).toBe(2);
 
-			SeNotificationsService.showNotificationError("third");
+			SeNotificationsService.showNotificationError("3");
 			expectLog();
 			expect(SeNotificationsService.notifications.length).toBe(3);
 
-			// no more logs
-			SeNotificationsService.showNotificationError("fourth");
-			expect(SeNotificationsService.notifications.length).toBe(3);
-
-			$timeout.flush(501);
-
-			SeNotificationsService.showNotificationError("fifth");
+			SeNotificationsService.showNotificationError("4");
 			expectLog();
 			expect(SeNotificationsService.notifications.length).toBe(4);
+
+			// no more logs
+			SeNotificationsService.showNotificationError("5");
+			expect(SeNotificationsService.notifications.length).toBe(4);
+
+			$timeout.flush(1201);
+
+			SeNotificationsService.showNotificationError("6");
+			expectLog();
+			expect(SeNotificationsService.notifications.length).toBe(5);
 		}));
 
 	});

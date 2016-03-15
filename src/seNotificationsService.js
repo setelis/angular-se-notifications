@@ -11,8 +11,8 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 		var httpErrorHideConfiguration = false;
 		var notificationsCountSettings = {
 			lastSecondNotificationsCount: 0,
-			MAX_NOTIFICATIONS_PER_TIME: 3,
-			MAX_NOTIFICATIONS_TIME: 500
+			MAX_NOTIFICATIONS_PER_TIME: 4,
+			MAX_NOTIFICATIONS_TIME: 1200
 		};
 
 		service.TYPE = {
@@ -237,6 +237,9 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 								return;
 							}
 							var logsRest = $injector.get("Restangular").all(options.logsEndpoint);
+							if ($injector.has("SeAjaxDisplayRequestErrorsService")) {
+								logsRest = $injector.get("SeAjaxDisplayRequestErrorsService").restangularSkipAjaxError(logsRest);
+							}
 
 							logsRest.post({message: angular.toJson(notification) + ";LASTSTATES: " + angular.toJson(lastStates)});
 						}
