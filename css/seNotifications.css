@@ -27,6 +27,8 @@
 #notifications-wrap .notification .notification-text {
  display: table-cell;
  vertical-align: middle;
+ min-height: 40px;
+ height: 40px;
 }
 #notifications-wrap .notification.alert-dismissable {
  padding-right: 15px;
