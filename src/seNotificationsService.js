@@ -190,20 +190,31 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 								}
 								return false;
 							}
-							function oldBrowser(debugInfo) {
-								if (debugInfo.indexOf("compatible;'MSIE'8'0;'Windows'") !== -1) {
-									return true;
-								}
-								return false;
-							}
 							function skipSend(debugInfo) {
-								if ((notification.template === "seNotifications.internalError.onerror" ||
-									notification.template === "seNotifications.internalError.exceptionHandler" || notification.template === "seNotifications.internalError.log.error") &&
-									oldBrowser(debugInfo)) {
+								function httpError(code) {
+									if (notification.template === ("httperrors." + code) &&
+										(debugInfo.indexOf("'RESPONSESTATUSCODE:'" + code + ",''RESPONSESTATUSTEXT") !== -1)) {
+										return true;
+									}
+								}
+								function oldBrowser(debugInfo) {
+									if (
+										(
+											notification.template === "seNotifications.internalError.onerror" ||
+											notification.template === "seNotifications.internalError.exceptionHandler" ||
+											notification.template === "seNotifications.internalError.log.error"
+										) &&
+										debugInfo.indexOf("compatible;'MSIE'8'0;'Windows'") !== -1
+									) {
+										return true;
+									}
+									return false;
+								}
+
+								if (oldBrowser(debugInfo)) {
 									return true;
 								}
-								if (notification.template === "httperrors.0" &&
-									(debugInfo.indexOf("'RESPONSESTATUSCODE:'0,''RESPONSESTATUSTEXT") !== -1)) {
+								if (httpError(0) || httpError(-1)) {
 									return true;
 								}
 								if (debugInfo.indexOf("http://www'baidu'com/search/spider'html") !== -1) {
