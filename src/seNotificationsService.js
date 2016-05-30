@@ -194,8 +194,6 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 								function httpError(code) {
 									if ((notification.template === ("httperrors." + code)) &&
 										(
-											// -1 is very special case when there is no RESPONSESTATUSCODE...
-											(code === -1) ||
 											(debugInfo.indexOf("'RESPONSESTATUSCODE:'" + code + ",''RESPONSESTATUSTEXT") !== -1)
 										)
 									) {
@@ -219,7 +217,7 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 								if (oldBrowser(debugInfo)) {
 									return true;
 								}
-								if (httpError(0) || httpError(-1)) {
+								if (httpError(0)) {
 									return true;
 								}
 								if (debugInfo.indexOf("http://www'baidu'com/search/spider'html") !== -1) {
@@ -242,6 +240,9 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 								result.skipSend = true;
 							} else if (skipSend(debugInfo)) {
 								result.skipShow = false;
+								result.skipSend = true;
+							} else if (notification.template === ("httperrors.-1")) {
+								result.skipShow = true;
 								result.skipSend = true;
 							}
 
