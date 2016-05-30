@@ -192,8 +192,13 @@ angular.module("seNotifications.service", ["restangular", "seNotifications.versi
 							}
 							function skipSend(debugInfo) {
 								function httpError(code) {
-									if (notification.template === ("httperrors." + code) &&
-										(debugInfo.indexOf("'RESPONSESTATUSCODE:'" + code + ",''RESPONSESTATUSTEXT") !== -1)) {
+									if ((notification.template === ("httperrors." + code)) &&
+										(
+											// -1 is very special case when there is no RESPONSESTATUSCODE...
+											(code === -1) ||
+											(debugInfo.indexOf("'RESPONSESTATUSCODE:'" + code + ",''RESPONSESTATUSTEXT") !== -1)
+										)
+									) {
 										return true;
 									}
 								}
